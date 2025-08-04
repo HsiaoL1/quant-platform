@@ -1,0 +1,176 @@
+[package]
+name = "defi-blockchain-runtime"
+version = "1.0.0"
+description = "DeFi-focused blockchain runtime with EVM compatibility and MEV protection."
+authors = ["DeFi Development Team"]
+homepage = "https://substrate.io/"
+edition = "2021"
+license = "MIT-0"
+publish = false
+
+[package.metadata.docs.rs]
+targets = ["x86_64-unknown-linux-gnu"]
+
+[dependencies]
+codec = { package = "parity-scale-codec", version = "3.6.1", default-features = false, features = ["derive"] }
+scale-info = { version = "2.5.0", default-features = false, features = ["derive"] }
+
+# Substrate Core Pallets
+pallet-aura = { version = "27.0.0", default-features = false }
+pallet-balances = { version = "28.0.0", default-features = false }
+frame-support = { version = "28.0.0", default-features = false }
+pallet-grandpa = { version = "28.0.0", default-features = false }
+pallet-sudo = { version = "28.0.0", default-features = false }
+frame-system = { version = "28.0.0", default-features = false }
+frame-try-runtime = { version = "0.34.0", default-features = false, optional = true }
+pallet-timestamp = { version = "27.0.0", default-features = false }
+pallet-transaction-payment = { version = "28.0.0", default-features = false }
+frame-executive = { version = "28.0.0", default-features = false }
+
+# Substrate Primitives
+sp-api = { version = "26.0.0", default-features = false }
+sp-block-builder = { version = "26.0.0", default-features = false }
+sp-consensus-aura = { version = "0.32.0", default-features = false }
+sp-consensus-grandpa = { version = "13.0.0", default-features = false }
+sp-core = { version = "28.0.0", default-features = false }
+sp-inherents = { version = "26.0.0", default-features = false }
+sp-offchain = { version = "26.0.0", default-features = false }
+sp-runtime = { version = "31.0.1", default-features = false }
+sp-session = { version = "27.0.0", default-features = false }
+sp-std = { version = "14.0.0", default-features = false }
+sp-storage = { version = "19.0.0", default-features = false }
+sp-transaction-pool = { version = "26.0.0", default-features = false }
+sp-version = { version = "29.0.0", default-features = false }
+
+# EVM and Ethereum Compatibility (Frontier)
+pallet-evm = { version = "6.0.0-dev", default-features = false, features = ["forbid-evm-reentrancy"] }
+pallet-ethereum = { version = "4.0.0-dev", default-features = false }
+pallet-evm-chain-id = { version = "1.0.0-dev", default-features = false }
+pallet-dynamic-fee = { version = "4.0.0-dev", default-features = false }
+pallet-base-fee = { version = "1.0.0", default-features = false }
+
+# Ethereum Primitives
+fp-evm = { version = "3.0.0-dev", default-features = false }
+fp-self-contained = { version = "1.0.0-dev", default-features = false }
+fp-rpc = { version = "3.0.0-dev", default-features = false }
+
+# Additional dependencies for EVM functionality
+lazy_static = { version = "1.4", features = ["spin_no_std"] }
+
+# Additional DeFi Pallets
+pallet-assets = { version = "29.1.0", default-features = false }
+pallet-treasury = { version = "27.0.0", default-features = false }
+pallet-collective = { version = "28.0.0", default-features = false }
+pallet-democracy = { version = "28.0.0", default-features = false }
+pallet-scheduler = { version = "29.0.0", default-features = false }
+pallet-preimage = { version = "28.0.0", default-features = false }
+
+# Used for the node template's RPCs
+frame-system-rpc-runtime-api = { version = "26.0.0", default-features = false }
+pallet-transaction-payment-rpc-runtime-api = { version = "28.0.0", default-features = false }
+
+# Used for runtime benchmarking
+frame-benchmarking = { version = "28.0.0", default-features = false, optional = true }
+frame-system-benchmarking = { version = "28.0.0", default-features = false, optional = true }
+
+# Local Dependencies
+pallet-template = { version = "4.0.0-dev", default-features = false, path = "../pallets/template" }
+
+[build-dependencies]
+substrate-wasm-builder = { version = "17.0.0", optional = true }
+
+[features]
+default = [ "std" ]
+std = [
+	"codec/std",
+	"frame-benchmarking?/std",
+	"frame-executive/std",
+	"frame-support/std",
+	"frame-system-benchmarking?/std",
+	"frame-system-rpc-runtime-api/std",
+	"frame-system/std",
+	"frame-try-runtime/std",
+	"frame-try-runtime?/std",
+	"pallet-aura/std",
+	"pallet-balances/std",
+	"pallet-grandpa/std",
+	"pallet-sudo/std",
+	"pallet-template/std",
+	"pallet-timestamp/std",
+	"pallet-transaction-payment-rpc-runtime-api/std",
+	"pallet-transaction-payment/std",
+	"scale-info/std",
+	"sp-api/std",
+	"sp-block-builder/std",
+	"sp-consensus-aura/std",
+	"sp-consensus-grandpa/std",
+	"sp-core/std",
+	"sp-inherents/std",
+	"sp-offchain/std",
+	"sp-runtime/std",
+	"sp-session/std",
+	"sp-std/std",
+	"sp-storage/std",
+	"sp-transaction-pool/std",
+	"sp-version/std",
+	"substrate-wasm-builder",
+	# EVM Pallets
+	"pallet-evm/std",
+	"pallet-ethereum/std",
+	"pallet-evm-chain-id/std",
+	"pallet-dynamic-fee/std",
+	"pallet-base-fee/std",
+	"fp-evm/std",
+	"fp-self-contained/std",
+	"fp-rpc/std",
+	# Additional DeFi Pallets
+	"pallet-assets/std",
+	"pallet-treasury/std",
+	"pallet-collective/std",
+	"pallet-democracy/std",
+	"pallet-scheduler/std",
+	"pallet-preimage/std",
+]
+runtime-benchmarks = [
+	"frame-benchmarking/runtime-benchmarks",
+	"frame-support/runtime-benchmarks",
+	"frame-system-benchmarking/runtime-benchmarks",
+	"frame-system/runtime-benchmarks",
+	"pallet-balances/runtime-benchmarks",
+	"pallet-grandpa/runtime-benchmarks",
+	"pallet-sudo/runtime-benchmarks",
+	"pallet-template/runtime-benchmarks",
+	"pallet-timestamp/runtime-benchmarks",
+	"sp-runtime/runtime-benchmarks",
+	"pallet-evm/runtime-benchmarks",
+	"pallet-ethereum/runtime-benchmarks",
+	"pallet-assets/runtime-benchmarks",
+	"pallet-treasury/runtime-benchmarks",
+	"pallet-collective/runtime-benchmarks",
+	"pallet-democracy/runtime-benchmarks",
+	"pallet-scheduler/runtime-benchmarks",
+	"pallet-preimage/runtime-benchmarks",
+]
+try-runtime = [
+	"frame-executive/try-runtime",
+	"frame-support/try-runtime",
+	"frame-system/try-runtime",
+	"frame-try-runtime/try-runtime",
+	"pallet-aura/try-runtime",
+	"pallet-balances/try-runtime",
+	"pallet-grandpa/try-runtime",
+	"pallet-sudo/try-runtime",
+	"pallet-template/try-runtime",
+	"pallet-timestamp/try-runtime",
+	"pallet-transaction-payment/try-runtime",
+	"sp-runtime/try-runtime",
+	"pallet-evm/try-runtime",
+	"pallet-ethereum/try-runtime",
+	"pallet-assets/try-runtime",
+	"pallet-treasury/try-runtime",
+	"pallet-collective/try-runtime",
+	"pallet-democracy/try-runtime",
+	"pallet-scheduler/try-runtime",
+	"pallet-preimage/try-runtime",
+]
+experimental = [ "pallet-aura/experimental" ]
